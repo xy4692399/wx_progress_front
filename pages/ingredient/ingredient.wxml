@@ -1,0 +1,116 @@
+<view class="container">
+  <view class="card">
+    <view class="card-title">新增食材采购</view>
+    <view class="form-group">
+      <view class="form-item">
+        <text class="form-label">食材名称</text>
+        <input class="input-field" placeholder="请输入食材名称" value="{{formData.ingredientName}}" bindinput="onIngredientNameInput" />
+      </view>
+      <view class="form-item">
+        <text class="form-label">采购日期</text>
+        <picker mode="date" :value="formData.purchaseDate" bindchange="onDateChange">
+          <view class="picker-value">{{formData.purchaseDate || '选择日期'}}</view>
+        </picker>
+      </view>
+      <view class="form-item">
+        <text class="form-label">单价</text>
+        <input class="input-field" type="digit" placeholder="请输入单价" value="{{formData.unitPrice}}" bindinput="onUnitPriceInput" />
+      </view>
+      <view class="form-item">
+        <text class="form-label">数量</text>
+        <input class="input-field" type="digit" placeholder="请输入数量" value="{{formData.quantity}}" bindinput="onQuantityInput" />
+      </view>
+      <view class="form-item">
+        <text class="form-label">总价</text>
+        <input class="input-field" type="digit" placeholder="自动计算" value="{{formData.totalPrice}}" disabled />
+      </view>
+      <view class="form-item">
+        <text class="form-label">供应商</text>
+        <input class="input-field" placeholder="选填" value="{{formData.supplier}}" bindinput="onSupplierInput" />
+      </view>
+      <button class="btn-primary" bindtap="submitForm">保存</button>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-header">
+      <text class="card-title">食材记录</text>
+      <view class="filter-bar">
+        <picker mode="date" :value="filterStartDate" bindchange="onStartDateChange">
+          <view class="filter-btn">{{filterStartDate || '开始日期'}}</view>
+        </picker>
+        <text class="filter-separator">-</text>
+        <picker mode="date" :value="filterEndDate" bindchange="onEndDateChange">
+          <view class="filter-btn">{{filterEndDate || '结束日期'}}</view>
+        </picker>
+      </view>
+    </view>
+    <view class="record-list">
+      <view class="record-item" wx:for="{{records}}" wx:key="id" wx:index="index" data-index="{{index}}" bindtap="showDetail">
+        <view class="record-info">
+          <view class="record-name">{{item.ingredientName}}</view>
+          <view class="record-meta">{{item.purchaseDate}} · {{item.supplier || '未知供应商'}}</view>
+        </view>
+        <view class="record-right">
+          <view class="record-amount">-{{formatMoney(item.totalPrice)}}</view>
+          <view class="record-unit">{{item.unitPrice}}/{{item.quantity}}</view>
+        </view>
+      </view>
+    </view>
+    <view wx:if="{{records.length === 0}}" class="empty-state">
+      <text class="empty-text">暂无食材记录</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">食材成本排行</view>
+    <view class="ranking-list">
+      <view class="ranking-item" wx:for="{{ranking}}" wx:key="index">
+        <view class="ranking-num">{{index + 1}}</view>
+        <view class="ranking-info">
+          <text class="ranking-name">{{item.name}}</text>
+          <view class="ranking-bar">
+            <view class="ranking-progress" :style="{width: item.percent + '%'}"></view>
+          </view>
+        </view>
+        <text class="ranking-amount">{{formatMoney(item.amount)}}</text>
+      </view>
+    </view>
+  </view>
+</view>
+
+<view class="modal-mask" wx:if="{{showModal}}" bindtap="closeModal">
+  <view class="modal-content" catchtap="preventClose">
+    <view class="modal-title">食材详情</view>
+    <view class="modal-body">
+      <view class="detail-item">
+        <text class="detail-label">食材名称</text>
+        <text class="detail-value">{{selectedRecord.ingredientName}}</text>
+      </view>
+      <view class="detail-item">
+        <text class="detail-label">采购日期</text>
+        <text class="detail-value">{{selectedRecord.purchaseDate}}</text>
+      </view>
+      <view class="detail-item">
+        <text class="detail-label">单价</text>
+        <text class="detail-value">{{formatMoney(selectedRecord.unitPrice)}}</text>
+      </view>
+      <view class="detail-item">
+        <text class="detail-label">数量</text>
+        <text class="detail-value">{{selectedRecord.quantity}}</text>
+      </view>
+      <view class="detail-item">
+        <text class="detail-label">总价</text>
+        <text class="detail-value text-danger font-bold">{{formatMoney(selectedRecord.totalPrice)}}</text>
+      </view>
+      <view class="detail-item" wx:if="{{selectedRecord.supplier}}">
+        <text class="detail-label">供应商</text>
+        <text class="detail-value">{{selectedRecord.supplier}}</text>
+      </view>
+    </view>
+    <view class="modal-footer">
+      <button class="btn-secondary" bindtap="closeModal">关闭</button>
+      <button class="btn-primary" bindtap="deleteRecord">删除</button>
+    </view>
+  </view>
+</view>

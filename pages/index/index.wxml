@@ -1,0 +1,81 @@
+<view class="container">
+  <view class="card">
+    <view class="header">
+      <view class="greeting">
+        <text class="greeting-text">今日概览</text>
+        <text class="date">{{today}}</text>
+      </view>
+    </view>
+    
+    <view class="stats-grid">
+      <view class="stat-item">
+        <text class="stat-value text-primary font-2xl">{{formatMoney(todayData.totalRevenue)}}</text>
+        <text class="stat-label">今日营收</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-value text-danger font-2xl">{{formatMoney(todayData.totalExpense)}}</text>
+        <text class="stat-label">今日支出</text>
+      </view>
+    </view>
+    
+    <view class="profit-card" :class="profitClass">
+      <text class="profit-label">今日净利润</text>
+      <text class="profit-value font-2xl">{{formatMoney(todayData.netProfit)}}</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">营收渠道分布</view>
+    <view class="channel-list">
+      <view class="channel-item" wx:for="{{todayData.channelBreakdown}}" wx:key="key">
+        <view class="channel-info">
+          <text class="channel-name">{{getChannelName(item.key)}}</text>
+          <text class="channel-amount">{{formatMoney(item.value)}}</text>
+        </view>
+        <view class="channel-bar">
+          <view class="channel-progress" :style="{width: getChannelPercent(item.value) + '%'}"></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">快捷操作</view>
+    <view class="quick-actions">
+      <view class="action-item" data-url="/pages/revenue/revenue" bindtap="goToPage">
+        <view class="action-icon revenue-icon">+</view>
+        <text class="action-text">记营收</text>
+      </view>
+      <view class="action-item" data-url="/pages/expense/expense" bindtap="goToPage">
+        <view class="action-icon expense-icon">-</view>
+        <text class="action-text">记支出</text>
+      </view>
+      <view class="action-item" data-url="/pages/ingredient/ingredient" bindtap="goToPage">
+        <view class="action-icon ingredient-icon">+</view>
+        <text class="action-text">食材采购</text>
+      </view>
+      <view class="action-item" data-url="/pages/dish/dish" bindtap="goToPage">
+        <view class="action-icon dish-icon">+</view>
+        <text class="action-text">菜品毛利</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">本月汇总</view>
+    <view class="monthly-summary">
+      <view class="summary-item">
+        <text class="summary-value">{{formatMoney(monthlyData.totalRevenue)}}</text>
+        <text class="summary-label">月营收</text>
+      </view>
+      <view class="summary-item">
+        <text class="summary-value">{{formatMoney(monthlyData.totalExpense)}}</text>
+        <text class="summary-label">月支出</text>
+      </view>
+      <view class="summary-item">
+        <text class="summary-value" :class="monthlyData.netProfit >= 0 ? 'text-success' : 'text-danger'">{{formatMoney(monthlyData.netProfit)}}</text>
+        <text class="summary-label">月净利润</text>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,222 @@
+.form-group {
+  margin-top: 10rpx;
+}
+
+.form-item {
+  margin-bottom: 20rpx;
+}
+
+.form-label {
+  display: block;
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 12rpx;
+}
+
+.profit-display {
+  display: flex;
+  justify-content: space-between;
+  background: #f8f9fa;
+  border-radius: 12rpx;
+  padding: 24rpx;
+}
+
+.profit-value {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #52c41a;
+}
+
+.profit-rate {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #FF6B35;
+}
+
+.dish-list {
+  margin-top: 10rpx;
+}
+
+.dish-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.dish-item:last-child {
+  border-bottom: none;
+}
+
+.dish-info {
+  flex: 1;
+}
+
+.dish-name {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 12rpx;
+}
+
+.dish-meta {
+  display: flex;
+  gap: 20rpx;
+}
+
+.dish-price, .dish-cost {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.dish-profit {
+  text-align: right;
+  padding: 16rpx 24rpx;
+  border-radius: 12rpx;
+}
+
+.profit-high {
+  background: #e6f7ff;
+}
+
+.profit-high .profit-text {
+  color: #1890ff;
+}
+
+.profit-high .profit-rate-text {
+  color: #1890ff;
+}
+
+.profit-normal {
+  background: #f6ffed;
+}
+
+.profit-normal .profit-text {
+  color: #52c41a;
+}
+
+.profit-normal .profit-rate-text {
+  color: #52c41a;
+}
+
+.profit-low {
+  background: #fff7e6;
+}
+
+.profit-low .profit-text {
+  color: #fa8c16;
+}
+
+.profit-low .profit-rate-text {
+  color: #fa8c16;
+}
+
+.profit-text {
+  display: block;
+  font-size: 32rpx;
+  font-weight: 600;
+}
+
+.profit-rate-text {
+  font-size: 24rpx;
+}
+
+.empty-state {
+  padding: 60rpx;
+  text-align: center;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #999;
+}
+
+.profit-ranking {
+  margin-top: 10rpx;
+}
+
+.ranking-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.ranking-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.ranking-items {
+  background: #f8f9fa;
+  border-radius: 12rpx;
+  padding: 16rpx;
+}
+
+.ranking-item {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid #e8e8e8;
+}
+
+.ranking-item:last-child {
+  border-bottom: none;
+}
+
+.rank-num {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24rpx;
+  font-weight: 600;
+  color: #999;
+  margin-right: 16rpx;
+}
+
+.rank-name {
+  flex: 1;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.rank-rate {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #52c41a;
+}
+
+.rank-rate.danger {
+  color: #ff4d4f;
+}
+
+.modal-body {
+  padding: 20rpx 0;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  font-size: 28rpx;
+  color: #999;
+}
+
+.detail-value {
+  font-size: 28rpx;
+  color: #333;
+}

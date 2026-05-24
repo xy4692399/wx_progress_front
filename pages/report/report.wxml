@@ -1,0 +1,113 @@
+<view class="container">
+  <view class="card">
+    <view class="card-header">
+      <text class="card-title">今日数据</text>
+      <text class="card-date">{{today}}</text>
+    </view>
+    <view class="stats-grid">
+      <view class="stat-card">
+        <text class="stat-value text-primary">{{formatMoney(todayData.totalRevenue)}}</text>
+        <text class="stat-label">今日营收</text>
+      </view>
+      <view class="stat-card">
+        <text class="stat-value text-danger">{{formatMoney(todayData.totalExpense)}}</text>
+        <text class="stat-label">今日支出</text>
+      </view>
+      <view class="stat-card" :class="todayData.netProfit >= 0 ? 'profit-positive' : 'profit-negative'">
+        <text class="stat-value">{{formatMoney(todayData.netProfit)}}</text>
+        <text class="stat-label">净利润</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-header">
+      <text class="card-title">本月汇总</text>
+      <view class="month-selector">
+        <picker mode="date" fields="month" :value="monthValue" bindchange="onMonthChange">
+          <view class="month-btn">{{monthText}}</view>
+        </picker>
+      </view>
+    </view>
+    <view class="monthly-summary">
+      <view class="summary-row">
+        <text class="summary-label">总营收</text>
+        <text class="summary-value text-primary">{{formatMoney(monthlyData.totalRevenue)}}</text>
+      </view>
+      <view class="summary-row">
+        <text class="summary-label">总支出</text>
+        <text class="summary-value text-danger">{{formatMoney(monthlyData.totalExpense)}}</text>
+      </view>
+      <view class="summary-row">
+        <text class="summary-label">食材成本</text>
+        <text class="summary-value">{{formatMoney(monthlyData.ingredientCost)}}</text>
+      </view>
+      <view class="summary-row">
+        <text class="summary-label">固定成本</text>
+        <text class="summary-value">{{formatMoney(monthlyData.fixedCost)}}</text>
+      </view>
+      <view class="summary-row highlight">
+        <text class="summary-label">净盈利</text>
+        <text class="summary-value" :class="monthlyData.netProfit >= 0 ? 'text-success' : 'text-danger'">{{formatMoney(monthlyData.netProfit)}}</text>
+      </view>
+    </view>
+
+    <view class="cost-chart">
+      <view class="chart-title">成本占比</view>
+      <view class="chart-bars">
+        <view class="bar-item">
+          <text class="bar-label">食材成本</text>
+          <view class="bar-wrapper">
+            <view class="bar bar-ingredient" :style="{height: monthlyData.ingredientCostRatio + '%'}"></view>
+          </view>
+          <text class="bar-value">{{monthlyData.ingredientCostRatio}}%</text>
+        </view>
+        <view class="bar-item">
+          <text class="bar-label">固定成本</text>
+          <view class="bar-wrapper">
+            <view class="bar bar-fixed" :style="{height: monthlyData.fixedCostRatio + '%'}"></view>
+          </view>
+          <text class="bar-value">{{monthlyData.fixedCostRatio}}%</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-header">
+      <text class="card-title">渠道营收占比</text>
+    </view>
+    <view class="channel-chart">
+      <view class="pie-chart">
+        <view class="pie-slice" wx:for="{{channelData}}" wx:key="index" :style="getPieStyle(item.percent, index)">
+          {{item.name}}
+        </view>
+      </view>
+      <view class="channel-legend">
+        <view class="legend-item" wx:for="{{channelData}}" wx:key="index">
+          <view class="legend-dot" :style="{background: getColor(index)}"></view>
+          <text class="legend-name">{{item.name}}</text>
+          <text class="legend-value">{{item.percent}}%</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-header">
+      <text class="card-title">每日明细</text>
+    </view>
+    <view class="daily-list">
+      <view class="daily-item" wx:for="{{dailyData}}" wx:key="summaryDate">
+        <view class="daily-date">{{formatDate(item.summaryDate)}}</view>
+        <view class="daily-revenue">{{formatMoney(item.totalRevenue)}}</view>
+        <view class="daily-expense">{{formatMoney(item.totalExpense)}}</view>
+        <view class="daily-profit" :class="item.netProfit >= 0 ? 'text-success' : 'text-danger'">{{formatMoney(item.netProfit)}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <button class="btn-primary" bindtap="exportData">导出月度报表</button>
+  </view>
+</view>

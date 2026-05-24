@@ -1,0 +1,115 @@
+.form-group {
+  margin-top: 10rpx;
+}
+
+.form-item {
+  margin-bottom: 20rpx;
+}
+
+.form-label {
+  display: block;
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 12rpx;
+}
+
+.picker-value {
+  background: #f8f8f8;
+  border-radius: 12rpx;
+  padding: 24rpx;
+  font-size: 30rpx;
+  color: #333;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.filter-bar {
+  display: flex;
+  gap: 10rpx;
+}
+
+.filter-btn {
+  padding: 12rpx 24rpx;
+  background: #f0f0f0;
+  border-radius: 20rpx;
+  font-size: 26rpx;
+  color: #666;
+}
+
+.record-list {
+  margin-top: 10rpx;
+}
+
+.record-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.record-item:last-child {
+  border-bottom: none;
+}
+
+.record-info {
+  flex: 1;
+}
+
+.record-channel {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.record-date {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.record-amount {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #52c41a;
+}
+
+.empty-state {
+  padding: 60rpx;
+  text-align: center;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #999;
+}
+
+.modal-body {
+  padding: 20rpx 0;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  font-size: 28rpx;
+  color: #999;
+}
+
+.detail-value {
+  font-size: 28rpx;
+  color: #333;
+}

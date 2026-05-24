@@ -1,0 +1,119 @@
+<view class="container">
+  <view class="card">
+    <view class="card-title">新增菜品</view>
+    <view class="form-group">
+      <view class="form-item">
+        <text class="form-label">菜品名称</text>
+        <input class="input-field" placeholder="请输入菜品名称" value="{{formData.dishName}}" bindinput="onDishNameInput" />
+      </view>
+      <view class="form-item">
+        <text class="form-label">售价</text>
+        <input class="input-field" type="digit" placeholder="请输入售价" value="{{formData.sellingPrice}}" bindinput="onSellingPriceInput" />
+      </view>
+      <view class="form-item">
+        <text class="form-label">单份食材成本</text>
+        <input class="input-field" type="digit" placeholder="请输入食材成本" value="{{formData.ingredientCost}}" bindinput="onIngredientCostInput" />
+      </view>
+      <view class="form-item">
+        <text class="form-label">日均售卖份数（选填）</text>
+        <input class="input-field" type="digit" placeholder="请输入日均售卖份数" value="{{formData.dailyAverageSales}}" bindinput="onDailyAverageSalesInput" />
+      </view>
+      <view class="form-item">
+        <text class="form-label">毛利（自动计算）</text>
+        <view class="profit-display">
+          <text class="profit-value">{{formatMoney(formData.profit)}}</text>
+          <text class="profit-rate">{{formData.profitRate}}%</text>
+        </view>
+      </view>
+      <button class="btn-primary" bindtap="submitForm">保存</button>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">菜品毛利分析</view>
+    <view class="dish-list">
+      <view class="dish-item" wx:for="{{dishList}}" wx:key="id" wx:index="index" data-index="{{index}}" bindtap="showDetail">
+        <view class="dish-info">
+          <view class="dish-name">{{item.dishName}}</view>
+          <view class="dish-meta">
+            <text class="dish-price">售价: {{formatMoney(item.sellingPrice)}}</text>
+            <text class="dish-cost">成本: {{formatMoney(item.ingredientCost)}}</text>
+          </view>
+        </view>
+        <view class="dish-profit" :class="getProfitClass(item.profitRate)">
+          <view class="profit-text">{{formatMoney(item.profit)}}</view>
+          <view class="profit-rate-text">{{item.profitRate}}%</view>
+        </view>
+      </view>
+    </view>
+    <view wx:if="{{dishList.length === 0}}" class="empty-state">
+      <text class="empty-text">暂无菜品记录</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">毛利排行</view>
+    <view class="profit-ranking">
+      <view class="ranking-header">
+        <text class="ranking-title">高毛利菜品</text>
+      </view>
+      <view class="ranking-items">
+        <view class="ranking-item" wx:for="{{highProfitList}}" wx:key="index">
+          <text class="rank-num">{{index + 1}}</text>
+          <text class="rank-name">{{item.dishName}}</text>
+          <text class="rank-rate">{{item.profitRate}}%</text>
+        </view>
+      </view>
+      <view class="ranking-header mt-20">
+        <text class="ranking-title">低毛利菜品</text>
+      </view>
+      <view class="ranking-items">
+        <view class="ranking-item" wx:for="{{lowProfitList}}" wx:key="index">
+          <text class="rank-num">{{index + 1}}</text>
+          <text class="rank-name">{{item.dishName}}</text>
+          <text class="rank-rate danger">{{item.profitRate}}%</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<view class="modal-mask" wx:if="{{showModal}}" bindtap="closeModal">
+  <view class="modal-content" catchtap="preventClose">
+    <view class="modal-title">菜品详情</view>
+    <view class="modal-body">
+      <view class="detail-item">
+        <text class="detail-label">菜品名称</text>
+        <text class="detail-value">{{selectedDish.dishName}}</text>
+      </view>
+      <view class="detail-item">
+        <text class="detail-label">售价</text>
+        <text class="detail-value">{{formatMoney(selectedDish.sellingPrice)}}</text>
+      </view>
+      <view class="detail-item">
+        <text class="detail-label">食材成本</text>
+        <text class="detail-value">{{formatMoney(selectedDish.ingredientCost)}}</text>
+      </view>
+      <view class="detail-item">
+        <text class="detail-label">毛利</text>
+        <text class="detail-value text-primary font-bold">{{formatMoney(selectedDish.profit)}}</text>
+      </view>
+      <view class="detail-item">
+        <text class="detail-label">毛利率</text>
+        <text class="detail-value">{{selectedDish.profitRate}}%</text>
+      </view>
+      <view class="detail-item" wx:if="{{selectedDish.dailyAverageSales}}">
+        <text class="detail-label">日均销量</text>
+        <text class="detail-value">{{selectedDish.dailyAverageSales}}份</text>
+      </view>
+      <view class="detail-item" wx:if="{{selectedDish.estimatedDailyProfit}}">
+        <text class="detail-label">预估日毛利</text>
+        <text class="detail-value text-success font-bold">{{formatMoney(selectedDish.estimatedDailyProfit)}}</text>
+      </view>
+    </view>
+    <view class="modal-footer">
+      <button class="btn-secondary" bindtap="closeModal">关闭</button>
+      <button class="btn-primary" bindtap="deleteDish">删除</button>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,205 @@
+.form-group {
+  margin-top: 10rpx;
+}
+
+.form-item {
+  margin-bottom: 20rpx;
+}
+
+.form-label {
+  display: block;
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 12rpx;
+}
+
+.picker-value {
+  background: #f8f8f8;
+  border-radius: 12rpx;
+  padding: 24rpx;
+  font-size: 30rpx;
+  color: #333;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+
+.filter-btn {
+  padding: 12rpx 24rpx;
+  background: #f0f0f0;
+  border-radius: 20rpx;
+  font-size: 26rpx;
+  color: #666;
+}
+
+.filter-separator {
+  font-size: 26rpx;
+  color: #999;
+}
+
+.record-list {
+  margin-top: 10rpx;
+}
+
+.record-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.record-item:last-child {
+  border-bottom: none;
+}
+
+.record-info {
+  flex: 1;
+}
+
+.record-name {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.record-meta {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.record-right {
+  text-align: right;
+}
+
+.record-amount {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #ff4d4f;
+  margin-bottom: 8rpx;
+}
+
+.record-unit {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.empty-state {
+  padding: 60rpx;
+  text-align: center;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #999;
+}
+
+.ranking-list {
+  margin-top: 10rpx;
+}
+
+.ranking-item {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.ranking-item:last-child {
+  border-bottom: none;
+}
+
+.ranking-num {
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: 50%;
+  background: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24rpx;
+  font-weight: 600;
+  color: #666;
+  margin-right: 20rpx;
+}
+
+.ranking-item:nth-child(1) .ranking-num {
+  background: #FF6B35;
+  color: white;
+}
+
+.ranking-item:nth-child(2) .ranking-num {
+  background: #ffb366;
+  color: white;
+}
+
+.ranking-item:nth-child(3) .ranking-num {
+  background: #ffd499;
+  color: white;
+}
+
+.ranking-info {
+  flex: 1;
+}
+
+.ranking-name {
+  display: block;
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.ranking-bar {
+  height: 8rpx;
+  background: #f0f0f0;
+  border-radius: 4rpx;
+  overflow: hidden;
+}
+
+.ranking-progress {
+  height: 100%;
+  background: linear-gradient(90deg, #FF6B35 0%, #F7931E 100%);
+  border-radius: 4rpx;
+}
+
+.ranking-amount {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #333;
+  margin-left: 20rpx;
+}
+
+.modal-body {
+  padding: 20rpx 0;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  font-size: 28rpx;
+  color: #999;
+}
+
+.detail-value {
+  font-size: 28rpx;
+  color: #333;
+}

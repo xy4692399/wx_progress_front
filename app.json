@@ -1,0 +1,55 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/revenue/revenue",
+    "pages/expense/expense",
+    "pages/ingredient/ingredient",
+    "pages/dish/dish",
+    "pages/report/report"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "店小账",
+    "navigationBarBackgroundColor": "#ffffff"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#FF6B35",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/home.png",
+        "selectedIconPath": "images/home-active.png"
+      },
+      {
+        "pagePath": "pages/revenue/revenue",
+        "text": "营收",
+        "iconPath": "images/revenue.png",
+        "selectedIconPath": "images/revenue-active.png"
+      },
+      {
+        "pagePath": "pages/expense/expense",
+        "text": "支出",
+        "iconPath": "images/expense.png",
+        "selectedIconPath": "images/expense-active.png"
+      },
+      {
+        "pagePath": "pages/ingredient/ingredient",
+        "text": "食材",
+        "iconPath": "images/ingredient.png",
+        "selectedIconPath": "images/ingredient-active.png"
+      },
+      {
+        "pagePath": "pages/report/report",
+        "text": "报表",
+        "iconPath": "images/report.png",
+        "selectedIconPath": "images/report-active.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json"
+}
