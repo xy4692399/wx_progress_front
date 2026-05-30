@@ -4,7 +4,8 @@ Page({
   data: {
     categories: ['食材采购', '房租物业', '员工工资/提成', '水电燃气杂费', '耗材采购', '其他支出'],
     categoryIndex: 0,
-    filterDate: '',
+    filterStartDate: '',
+    filterEndDate: '',
     formData: {
       recordDate: '',
       category: '',
@@ -20,10 +21,17 @@ Page({
   onLoad: function () {
     const now = new Date()
     const dateStr = now.toISOString().split('T')[0]
+    
+    const year = now.getFullYear()
+    const month = now.getMonth() + 1
+    const firstDay = `${year}-${month.toString().padStart(2, '0')}-01`
+    const lastDay = new Date(year, month, 0).toISOString().split('T')[0]
+    
     this.setData({
       'formData.recordDate': dateStr,
       'formData.category': this.data.categories[0],
-      filterDate: dateStr
+      filterStartDate: firstDay,
+      filterEndDate: lastDay
     })
     this.loadRecords()
   },
@@ -46,9 +54,16 @@ Page({
     })
   },
 
-  onFilterDateChange: function (e) {
+  onFilterStartDateChange: function (e) {
     this.setData({
-      filterDate: e.detail.value
+      filterStartDate: e.detail.value
+    })
+    this.loadRecords()
+  },
+  
+  onFilterEndDateChange: function (e) {
+    this.setData({
+      filterEndDate: e.detail.value
     })
     this.loadRecords()
   },
@@ -104,22 +119,38 @@ Page({
   },
 
   loadRecords: function () {
-    const userId = app.globalData.userId || wx.getStorageSync('userId')
-    if (!userId) return
+    const userId = app.globalData.userId || wx.getStorageSync('userId') || 'test_user_1'
+    
+    const now = new Date()
+    const year = now.getFullYear()
+    const month = now.getMonth() + 1
+    const defaultStartDate = `${year}-${month.toString().padStart(2, '0')}-01`
+    const defaultEndDate = new Date(year, month, 0).toISOString().split('T')[0]
+    
+    const startDate = this.data.filterStartDate || defaultStartDate
+    const endDate = this.data.filterEndDate || defaultEndDate
+    
+    console.log('支出记录查询 - 用户ID:', userId, '起始日期:', startDate, '结束日期:', endDate)
 
     wx.request({
-      url: app.globalData.baseUrl + '/expense/list/by-date',
+      url: app.globalData.baseUrl + '/expense/list',
       method: 'GET',
       header: {
         'X-User-Id': userId
       },
       data: {
-        date: this.data.filterDate
+        startDate: startDate,
+        endDate: endDate
       },
       success: (res) => {
         if (res.data.code === 200) {
+          const records = (res.data.data || []).map(record => ({
+            ...record,
+            categoryName: this.getCategoryName(record.category),
+            amountFormatted: this.formatMoney(record.amount)
+          }))
           this.setData({
-            records: res.data.data
+            records: records
           })
         }
       }

@@ -21,10 +21,16 @@ Page({
   onLoad: function () {
     const now = new Date()
     const dateStr = now.toISOString().split('T')[0]
+    
+    const year = now.getFullYear()
+    const month = now.getMonth() + 1
+    const firstDay = `${year}-${month.toString().padStart(2, '0')}-01`
+    const lastDay = new Date(year, month, 0).toISOString().split('T')[0]
+    
     this.setData({
       'formData.purchaseDate': dateStr,
-      filterStartDate: dateStr,
-      filterEndDate: dateStr
+      filterStartDate: firstDay,
+      filterEndDate: lastDay
     })
     this.loadRecords()
     this.loadRanking()
@@ -82,8 +88,7 @@ Page({
   },
 
   loadRecords: function () {
-    const userId = app.globalData.userId || wx.getStorageSync('userId')
-    if (!userId) return
+    const userId = app.globalData.userId || wx.getStorageSync('userId') || 'test_user_1'
 
     wx.request({
       url: app.globalData.baseUrl + '/ingredient/list',
@@ -97,17 +102,25 @@ Page({
       },
       success: (res) => {
         if (res.data.code === 200) {
+          const records = (res.data.data || []).map(record => ({
+            ...record,
+            totalPriceFormatted: this.formatMoney(record.totalPrice)
+          }))
           this.setData({
-            records: res.data.data
+            records: records
           })
         }
       }
     })
   },
 
+  formatMoney: function (value) {
+    if (!value && value !== 0) return '0.00'
+    return parseFloat(value).toFixed(2)
+  },
+
   loadRanking: function () {
-    const userId = app.globalData.userId || wx.getStorageSync('userId')
-    if (!userId) return
+    const userId = app.globalData.userId || wx.getStorageSync('userId') || 'test_user_1'
 
     wx.request({
       url: app.globalData.baseUrl + '/ingredient/ranking',

@@ -4,13 +4,13 @@
     <view class="form-group">
       <view class="form-item">
         <text class="form-label">日期</text>
-        <picker mode="date" :value="formData.recordDate" bindchange="onDateChange">
+        <picker mode="date" value="{{formData.recordDate}}" bindchange="onDateChange">
           <view class="picker-value">{{formData.recordDate || '选择日期'}}</view>
         </picker>
       </view>
       <view class="form-item">
         <text class="form-label">分类</text>
-        <picker :value="categoryIndex" :range="categories" bindchange="onCategoryChange">
+        <picker value="{{categoryIndex}}" range="{{categories}}" bindchange="onCategoryChange">
           <view class="picker-value">{{categories[categoryIndex] || '选择分类'}}</view>
         </picker>
       </view>
@@ -21,7 +21,7 @@
       <view class="form-item">
         <text class="form-label">票据照片</text>
         <view class="upload-area" bindtap="uploadImage">
-          <image wx:if="{{formData.ticketUrl}}" :src="formData.ticketUrl" class="upload-image" />
+          <image wx:if="{{formData.ticketUrl}}" src="{{formData.ticketUrl}}" class="upload-image" />
           <view wx:else class="upload-placeholder">
             <text class="upload-icon">+</text>
             <text class="upload-text">上传票据</text>
@@ -40,18 +40,18 @@
     <view class="card-header">
       <text class="card-title">支出记录</text>
       <view class="filter-bar">
-        <picker mode="date" :value="filterDate" bindchange="onFilterDateChange">
-          <view class="filter-btn">{{filterDate || '筛选日期'}}</view>
+        <picker mode="date" value="{{filterStartDate}}" bindchange="onFilterStartDateChange">
+          <view class="filter-btn">{{filterStartDate || '开始日期'}} - {{filterEndDate || '结束日期'}}</view>
         </picker>
       </view>
     </view>
     <view class="record-list">
       <view class="record-item" wx:for="{{records}}" wx:key="id" wx:index="index" data-index="{{index}}" bindtap="showDetail">
         <view class="record-info">
-          <view class="record-category">{{getCategoryName(item.category)}}</view>
+          <view class="record-category">{{item.categoryName}}</view>
           <view class="record-date">{{item.recordDate}}</view>
         </view>
-        <view class="record-amount">-{{formatMoney(item.amount)}}</view>
+        <view class="record-amount">-¥{{item.amountFormatted}}</view>
       </view>
     </view>
     <view wx:if="{{records.length === 0}}" class="empty-state">

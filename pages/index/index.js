@@ -22,7 +22,7 @@ Page({
     this.loadTodayData()
     this.loadMonthlyData()
   },
-
+  
   onShow: function () {
     this.loadTodayData()
     this.loadMonthlyData()
@@ -39,8 +39,10 @@ Page({
   },
 
   loadTodayData: function () {
-    const userId = app.globalData.userId || wx.getStorageSync('userId')
-    if (!userId) return
+    const userId = app.globalData.userId || wx.getStorageSync('userId') || 'test_user_1'
+    const date = new Date().toISOString().split('T')[0]
+    
+    console.log('今日数据查询 - 用户ID:', userId, '日期:', date)
 
     wx.request({
       url: app.globalData.baseUrl + '/report/daily',
@@ -49,25 +51,68 @@ Page({
         'X-User-Id': userId
       },
       data: {
-        date: new Date().toISOString().split('T')[0]
+        date: date
       },
       success: (res) => {
+        console.log('今日数据响应:', res)
         if (res.data.code === 200) {
+          const data = res.data.data.data || res.data.data
+          console.log('今日数据:', data)
+          
+          const channelBreakdown = data.channelBreakdown || {}
+      const channelList = []
+      const channelColors = {
+        '美团外卖': '#52c41a',
+        '饿了么外卖': '#1890ff',
+        '美团团购/到店': '#722ed1',
+        '私域微信接单': '#13c2c2',
+        '堂食现金': '#fa8c16',
+        '其他收入': '#91caff'
+      }
+      
+      for (const key in channelBreakdown) {
+        const amount = channelBreakdown[key]
+        const percent = data.totalRevenue > 0 ? (amount / data.totalRevenue * 100).toFixed(0) : 0
+        channelList.push({
+          key: key,
+          name: this.getChannelName(key),
+          value: amount,
+          formattedValue: this.formatMoney(amount),
+          percent: percent,
+          color: channelColors[key] || '#FF6B35'
+        })
+      }
+      
+      const todayData = {
+            totalRevenue: data.totalRevenue || 0,
+            totalExpense: data.totalExpense || 0,
+            netProfit: data.netProfit || 0,
+            totalRevenueFormatted: this.formatMoney(data.totalRevenue),
+            totalExpenseFormatted: this.formatMoney(data.totalExpense),
+            netProfitFormatted: this.formatMoney(data.netProfit),
+            channelBreakdown: channelBreakdown,
+            channelList: channelList
+          }
+          
           this.setData({
-            todayData: res.data.data
+            todayData: todayData
           })
         }
+      },
+      fail: (err) => {
+        console.log('今日数据请求失败:', err)
       }
     })
   },
 
   loadMonthlyData: function () {
-    const userId = app.globalData.userId || wx.getStorageSync('userId')
-    if (!userId) return
-
+    const userId = app.globalData.userId || wx.getStorageSync('userId') || 'test_user_1'
+    
     const now = new Date()
     const year = now.getFullYear()
     const month = now.getMonth() + 1
+    
+    console.log('月度数据查询 - 用户ID:', userId, '年份:', year, '月份:', month)
 
     wx.request({
       url: app.globalData.baseUrl + '/report/monthly',
@@ -80,22 +125,40 @@ Page({
         month: month
       },
       success: (res) => {
+        console.log('月度数据响应:', res)
         if (res.data.code === 200) {
+          const data = res.data.data.data || res.data.data
+          console.log('月度数据:', data)
+          
+          const monthlyData = {
+            totalRevenue: data.totalRevenue || 0,
+            totalExpense: data.totalExpense || 0,
+            netProfit: data.netProfit || 0,
+            totalRevenueFormatted: this.formatMoney(data.totalRevenue),
+            totalExpenseFormatted: this.formatMoney(data.totalExpense),
+            netProfitFormatted: this.formatMoney(data.netProfit)
+          }
+          
           this.setData({
-            monthlyData: {
-              totalRevenue: res.data.data.totalRevenue || 0,
-              totalExpense: res.data.data.totalExpense || 0,
-              netProfit: res.data.data.netProfit || 0
-            }
+            monthlyData: monthlyData
           })
         }
+      },
+      fail: (err) => {
+        console.log('月度数据请求失败:', err)
       }
     })
   },
 
   formatMoney: function (value) {
-    if (!value) return '¥0.00'
-    return '¥' + parseFloat(value).toFixed(2)
+    console.log('formatMoney 输入:', value, '类型:', typeof value)
+    if (!value && value !== 0) {
+      console.log('formatMoney 返回: ¥0.00')
+      return '¥0.00'
+    }
+    const result = '¥' + parseFloat(value).toFixed(2)
+    console.log('formatMoney 返回:', result)
+    return result
   },
 
   getChannelName: function (channel) {

@@ -4,13 +4,13 @@
     <view class="form-group">
       <view class="form-item">
         <text class="form-label">日期</text>
-        <picker mode="date" :value="formData.recordDate" bindchange="onDateChange">
+        <picker mode="date" value="{{formData.recordDate}}" bindchange="onDateChange">
           <view class="picker-value">{{formData.recordDate || '选择日期'}}</view>
         </picker>
       </view>
       <view class="form-item">
         <text class="form-label">渠道</text>
-        <picker :value="channelIndex" :range="channels" bindchange="onChannelChange">
+        <picker value="{{channelIndex}}" range="{{channels}}" bindchange="onChannelChange">
           <view class="picker-value">{{channels[channelIndex] || '选择渠道'}}</view>
         </picker>
       </view>
@@ -30,18 +30,18 @@
     <view class="card-header">
       <text class="card-title">营收记录</text>
       <view class="filter-bar">
-        <picker mode="date" :value="filterDate" bindchange="onFilterDateChange">
-          <view class="filter-btn">{{filterDate || '筛选日期'}}</view>
+        <picker mode="date" value="{{filterStartDate}}" bindchange="onFilterStartDateChange">
+          <view class="filter-btn">{{filterStartDate || '开始日期'}} - {{filterEndDate || '结束日期'}}</view>
         </picker>
       </view>
     </view>
     <view class="record-list">
       <view class="record-item" wx:for="{{records}}" wx:key="id" wx:index="index" data-index="{{index}}" bindtap="showDetail">
         <view class="record-info">
-          <view class="record-channel">{{getChannelName(item.channel)}}</view>
+          <view class="record-channel">{{item.channelName}}</view>
           <view class="record-date">{{item.recordDate}}</view>
         </view>
-        <view class="record-amount">+{{formatMoney(item.amount)}}</view>
+        <view class="record-amount">+¥{{item.amountFormatted}}</view>
       </view>
     </view>
     <view wx:if="{{records.length === 0}}" class="empty-state">
@@ -60,11 +60,11 @@
       </view>
       <view class="detail-item">
         <text class="detail-label">渠道</text>
-        <text class="detail-value">{{getChannelName(selectedRecord.channel)}}</text>
+        <text class="detail-value">{{selectedRecord.channelName}}</text>
       </view>
       <view class="detail-item">
         <text class="detail-label">金额</text>
-        <text class="detail-value text-primary font-bold">{{formatMoney(selectedRecord.amount)}}</text>
+        <text class="detail-value text-primary font-bold">¥{{selectedRecord.amountFormatted}}</text>
       </view>
       <view class="detail-item" wx:if="{{selectedRecord.remark}}">
         <text class="detail-label">备注</text>

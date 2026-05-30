@@ -36,11 +36,11 @@
     <view class="card-header">
       <text class="card-title">食材记录</text>
       <view class="filter-bar">
-        <picker mode="date" :value="filterStartDate" bindchange="onStartDateChange">
+        <picker mode="date" value="{{filterStartDate}}" bindchange="onStartDateChange">
           <view class="filter-btn">{{filterStartDate || '开始日期'}}</view>
         </picker>
         <text class="filter-separator">-</text>
-        <picker mode="date" :value="filterEndDate" bindchange="onEndDateChange">
+        <picker mode="date" value="{{filterEndDate}}" bindchange="onEndDateChange">
           <view class="filter-btn">{{filterEndDate || '结束日期'}}</view>
         </picker>
       </view>
@@ -52,7 +52,7 @@
           <view class="record-meta">{{item.purchaseDate}} · {{item.supplier || '未知供应商'}}</view>
         </view>
         <view class="record-right">
-          <view class="record-amount">-{{formatMoney(item.totalPrice)}}</view>
+          <view class="record-amount">-¥{{item.totalPriceFormatted}}</view>
           <view class="record-unit">{{item.unitPrice}}/{{item.quantity}}</view>
         </view>
       </view>

@@ -4,7 +4,8 @@ Page({
   data: {
     channels: ['美团外卖', '饿了么外卖', '美团团购/到店', '私域微信接单', '堂食现金', '其他收入'],
     channelIndex: 0,
-    filterDate: '',
+    filterStartDate: '',
+    filterEndDate: '',
     formData: {
       recordDate: '',
       channel: '',
@@ -19,10 +20,17 @@ Page({
   onLoad: function () {
     const now = new Date()
     const dateStr = now.toISOString().split('T')[0]
+    
+    const year = now.getFullYear()
+    const month = now.getMonth() + 1
+    const firstDay = `${year}-${month.toString().padStart(2, '0')}-01`
+    const lastDay = new Date(year, month, 0).toISOString().split('T')[0]
+    
     this.setData({
       'formData.recordDate': dateStr,
       'formData.channel': this.data.channels[0],
-      filterDate: dateStr
+      filterStartDate: firstDay,
+      filterEndDate: lastDay
     })
     this.loadRecords()
   },
@@ -45,9 +53,16 @@ Page({
     })
   },
 
-  onFilterDateChange: function (e) {
+  onFilterStartDateChange: function (e) {
     this.setData({
-      filterDate: e.detail.value
+      filterStartDate: e.detail.value
+    })
+    this.loadRecords()
+  },
+  
+  onFilterEndDateChange: function (e) {
+    this.setData({
+      filterEndDate: e.detail.value
     })
     this.loadRecords()
   },
@@ -65,22 +80,38 @@ Page({
   },
 
   loadRecords: function () {
-    const userId = app.globalData.userId || wx.getStorageSync('userId')
-    if (!userId) return
+    const userId = app.globalData.userId || wx.getStorageSync('userId') || 'test_user_1'
+    
+    const now = new Date()
+    const year = now.getFullYear()
+    const month = now.getMonth() + 1
+    const defaultStartDate = `${year}-${month.toString().padStart(2, '0')}-01`
+    const defaultEndDate = new Date(year, month, 0).toISOString().split('T')[0]
+    
+    const startDate = this.data.filterStartDate || defaultStartDate
+    const endDate = this.data.filterEndDate || defaultEndDate
+    
+    console.log('营收记录查询 - 用户ID:', userId, '起始日期:', startDate, '结束日期:', endDate)
 
     wx.request({
-      url: app.globalData.baseUrl + '/revenue/list/by-date',
+      url: app.globalData.baseUrl + '/revenue/list',
       method: 'GET',
       header: {
         'X-User-Id': userId
       },
       data: {
-        date: this.data.filterDate
+        startDate: startDate,
+        endDate: endDate
       },
       success: (res) => {
         if (res.data.code === 200) {
+          const records = (res.data.data || []).map(record => ({
+            ...record,
+            channelName: this.getChannelName(record.channel),
+            amountFormatted: this.formatMoney(record.amount)
+          }))
           this.setData({
-            records: res.data.data
+            records: records
           })
         }
       }
@@ -88,7 +119,7 @@ Page({
   },
 
   submitForm: function () {
-    const userId = app.globalData.userId || wx.getStorageSync('userId') || 'dev_user_1'
+    const userId = app.globalData.userId || wx.getStorageSync('userId') || 'test_user_1'
     
     console.log('当前用户ID:', userId)
 
@@ -142,8 +173,15 @@ Page({
     const dataset = e.currentTarget.dataset || {}
     const recordIndex = dataset.index
     const record = this.data.records[recordIndex]
+    
+    const displayRecord = {
+      ...record,
+      channelName: this.getChannelName(record.channel),
+      amountFormatted: this.formatMoney(record.amount)
+    }
+    
     this.setData({
-      selectedRecord: record,
+      selectedRecord: displayRecord,
       showModal: true
     })
   },
